@@ -24,5 +24,6 @@ extern unsigned int** g_training_answer;
 
 void data_init(Arguments arguments);
 void data_free(Arguments arguments);
+unsigned int* data_pchar_to_pint(char *str);
 
 #endif 

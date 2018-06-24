@@ -8,5 +8,6 @@ typedef struct List_s {
 
 List* list_add_elem(List* list, void *elem);
 List* list_merge(List* list, List *other);
+unsigned int list_len(List* list);
 
 #endif

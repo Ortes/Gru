@@ -26,7 +26,8 @@ unsigned int** g_training_answer;
  **/
 Dict* create_dict_elem(char* word) {
     Dict* dict = malloc(sizeof(Dict));
-    dict->word = word;
+    dict->word = malloc(sizeof(strlen(word) + 1));
+    strcpy(dict->word, word);
     dict->value = g_dict_index;
     ++g_dict_index;
     return dict;
@@ -64,6 +65,58 @@ List* init_training_list() {
     return training_data;
 }
 
+unsigned int find_word_in_dict(char *word) {
+    List* tmp_dict = g_dict;
+    while (tmp_dict->next != 0) {
+        if (strcmp(((Dict*)tmp_dict->data)->word, word) == 0)
+            return ((Dict*)tmp_dict->data)->value;
+        tmp_dict = tmp_dict->next;
+    }
+    if (strcmp(((Dict*)tmp_dict->data)->word, word) == 0) {
+        return ((Dict*)tmp_dict->data)->value;
+    }
+    Dict* dict_elem = create_dict_elem(word);
+    g_dict = list_add_elem(g_dict, dict_elem);
+    return dict_elem->value;
+}
+
+unsigned int* data_pchar_to_pint(char *str) {
+    unsigned int index = 0;
+    unsigned int* result = malloc(sizeof(unsigned int) * string_nb_word(str) + 1);
+    char *word = strtok(str," ,.!?");
+    while (word != 0)
+    {
+        if (word[0] != '\n' && word[0] != '\r')
+            result[index++] == find_word_in_dict(word);
+        word = strtok(0, " ,.!?");
+    }
+    result[index] = 0;
+    return result;
+}
+
+List *load_training_file(FILE *file) {
+    char *line = 0;
+    size_t len = 0;
+    ssize_t read;
+    List *training_data = malloc(sizeof(List));
+    unsigned int* last_sentence = malloc(sizeof(int));
+    *last_sentence = 0;
+    List *current_elem = training_data;
+    List *prev_elem;
+
+    while ((read = getline(&line, &len, file)) != -1) {
+        unsigned int *sentence_value = data_pchar_to_pint(line);
+        current_elem->data = create_training_data_elem(last_sentence, sentence_value);
+        current_elem->next = malloc(sizeof(List));
+        prev_elem = current_elem;
+        current_elem = current_elem->next;
+        last_sentence = sentence_value;
+    }
+    prev_elem->next = 0;
+    printf("\x1B[32m[INFO]\x1B[0m Load a file of %d data\n", list_len(training_data));
+    return training_data;
+}
+
 /**
  * Initialize all training global variable and start iterate over file to load training data.
  **/
@@ -97,10 +150,12 @@ void load_training(char *data_path) {
             continue;
         }
         printf("\x1B[32m[INFO]\x1B[0m Loading File \"%s\"\n", direntry->d_name);
+        training_data_list = list_merge(load_training_file(entry_file), training_data_list);
 
         free(file_path);
         fclose(entry_file);
     }
+    printf("\x1B[32m[INFO]\x1B[0m End of loading. Size of Global Word Dictionnary %d. Size of data %d\n", list_len(g_dict), list_len(training_data_list));
 }
 
 /**
