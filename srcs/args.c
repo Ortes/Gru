@@ -29,11 +29,11 @@ Arguments arguments_get_args(int argc, char* const argv[]) {
           arguments.data_dir_path = 0;
     }
   if(arguments.action == UNSET)
-    printf("You need to set a mode with -r or -t (RUN, TRAIN)\n");
+    printf("\x1B[31m[ERROR]\x1B[0m You need to set a mode with -r or -t (RUN, TRAIN)\n");
   if(arguments.action == RUN && arguments.model_file_path == 0)
-    printf("You need to specify a model path with -m\n");
+    printf("\x1B[31m[ERROR]\x1B[0m You need to specify a model path with -m\n");
   if(arguments.action == TRAIN && arguments.data_dir_path == 0)
-    printf("You need to specify a training data path with -d\n");
+    printf("\x1B[31m[ERROR]\x1B[0m You need to specify a training data path with -d\n");
 
   return arguments;
 }

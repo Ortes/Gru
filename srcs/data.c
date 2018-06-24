@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <unistd.h>
+#include <errno.h>
 
 #include "data.h"
+#include "utils.h"
 
 /**
  * The Global Dictionnary of word (Dict in dict.h)
@@ -62,9 +68,39 @@ List* init_training_list() {
  * Initialize all training global variable and start iterate over file to load training data.
  **/
 void load_training(char *data_path) {
-    printf("Loading Training data in \"%s\"\n", data_path);
+    printf("\x1B[32m[INFO]\x1B[0m Loading Training data in \"%s\"\n", data_path);
     init_dict();
     List *training_data_list = init_training_list();
+    DIR* fd = 0;
+    if (0 == (fd = opendir(data_path))) 
+    {
+        printf("\x1B[31m[ERROR]\x1B[0m : Failed to open input directory - %s\n", strerror(errno));
+        return;
+    }
+    struct dirent* direntry;
+    while ((direntry = readdir(fd))) 
+    {
+        if (!strcmp(direntry->d_name, ".") || !strcmp(direntry->d_name, ".."))
+            continue;
+        char *file_path;
+        if(data_path[strlen(data_path)-1] == '/')
+            file_path = string_concat(data_path, direntry->d_name);
+        else
+        {
+            file_path = string_concat(data_path, "/");
+            file_path = string_concat(file_path, direntry->d_name);
+        }
+        FILE *entry_file = fopen(file_path, "r");
+        if (entry_file == 0)
+        {
+            printf("\x1B[31m[ERROR]\x1B[0m : Failed to open entry file - %s\n", strerror(errno));
+            continue;
+        }
+        printf("\x1B[32m[INFO]\x1B[0m Loading File \"%s\"\n", direntry->d_name);
+
+        free(file_path);
+        fclose(entry_file);
+    }
 }
 
 /**
@@ -93,7 +129,7 @@ void free_training() {
  * Free all data at the end of program.
  */
 void data_free(Arguments arguments) {
-    printf("Unloading data\n");
+    printf("\x1B[32m[INFO]\x1B[0m Unloading data\n");
     if (arguments.action == TRAIN && arguments.data_dir_path != 0)
         free_training();
 }
