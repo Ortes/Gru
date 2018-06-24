@@ -6,6 +6,7 @@ typedef struct List_s {
     struct List_s *next;
 } List;
 
-List* list_add_elem(List* list, List *elem);
+List* list_add_elem(List* list, void *elem);
+List* list_merge(List* list, List *other);
 
 #endif

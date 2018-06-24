@@ -3,6 +3,7 @@
 
 #include "arg.h"
 
+// TODO display usages.
 Arguments arguments_get_args(int argc, char* const argv[]) {
   Arguments arguments;
   arguments.action = UNSET;
