@@ -22,8 +22,8 @@ char* string_trim(const char *input)
 }
 
 unsigned int string_nb_word(char *str) {
-    char *tmp = malloc(sizeof(strlen(str) + 1));
-    strcpy(tmp, str);
+    char *tmp = malloc(strlen(str) + 1);
+    tmp = strcpy(tmp, str);
     unsigned int count = 0;
     char *word = strtok(tmp," ,.!?");
     while (word != 0)

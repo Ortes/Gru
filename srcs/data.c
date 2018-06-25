@@ -26,7 +26,7 @@ unsigned int** g_training_answer;
  **/
 Dict* create_dict_elem(char* word) {
     Dict* dict = malloc(sizeof(Dict));
-    dict->word = malloc(sizeof(strlen(word) + 1));
+    dict->word = malloc(strlen(word) + 1);
     strcpy(dict->word, word);
     dict->value = g_dict_index;
     ++g_dict_index;
@@ -103,6 +103,7 @@ List *load_training_file(FILE *file) {
     *last_sentence = 0;
     List *current_elem = training_data;
     List *prev_elem;
+    int index = 0;
 
     while ((read = getline(&line, &len, file)) != -1) {
         unsigned int *sentence_value = data_pchar_to_pint(line);
@@ -111,6 +112,9 @@ List *load_training_file(FILE *file) {
         prev_elem = current_elem;
         current_elem = current_elem->next;
         last_sentence = sentence_value;
+        index++;
+        if (index % 1000 == 0)
+            printf("\x1B[32m[INFO]\x1B[0m Process line : %d\n", index);
     }
     prev_elem->next = 0;
     printf("\x1B[32m[INFO]\x1B[0m Load a file of %d data\n", list_len(training_data));
