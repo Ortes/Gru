@@ -1,7 +1,7 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-struct Embedded_s {
+typedef struct Embedded_s {
   int nb_words;
   int nb_layers;
   int* layers_size;
