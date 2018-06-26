@@ -19,8 +19,7 @@ typedef struct Training_Data_s {
 } Training_Data;
 
 extern List* g_dict;
-extern unsigned int** g_training_sentence;
-extern unsigned int** g_training_answer;
+extern List* g_training_data;
 
 void data_init(Arguments arguments);
 void data_free(Arguments arguments);

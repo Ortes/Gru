@@ -1,7 +1,7 @@
 #ifndef ARG_H_
 #define ARG_H_
 
-typedef enum Action_e{TRAIN, RUN, UNSET} Action;
+typedef enum Action_e{TRAIN_EMBEDDED, TRAIN, RUN, UNSET} Action;
 
 typedef struct Arguments_s {
     Action action;

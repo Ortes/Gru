@@ -15,11 +15,7 @@
 List* g_dict;
 unsigned int g_dict_index = 0; // contains the last word index + 1.
 
-/**
- * Two int** of training data one for sentence, another for answer
- **/
-unsigned int** g_training_sentence;
-unsigned int** g_training_answer;
+List* g_training_data;
 
 /**
  * Create a Dictionnary element.
@@ -127,7 +123,7 @@ List *load_training_file(FILE *file) {
 void load_training(char *data_path) {
     printf("\x1B[32m[INFO]\x1B[0m Loading Training data in \"%s\"\n", data_path);
     init_dict();
-    List *training_data_list = init_training_list();
+    g_training_data = init_training_list();
     DIR* fd = 0;
     if (0 == (fd = opendir(data_path))) 
     {
@@ -154,12 +150,12 @@ void load_training(char *data_path) {
             continue;
         }
         printf("\x1B[32m[INFO]\x1B[0m Loading File \"%s\"\n", direntry->d_name);
-        training_data_list = list_merge(load_training_file(entry_file), training_data_list);
+        g_training_data = list_merge(load_training_file(entry_file), g_training_data);
 
         free(file_path);
         fclose(entry_file);
     }
-    printf("\x1B[32m[INFO]\x1B[0m End of loading. Size of Global Word Dictionnary %d. Size of data %d\n", list_len(g_dict), list_len(training_data_list));
+    printf("\x1B[32m[INFO]\x1B[0m End of loading. Size of Global Word Dictionnary %d. Size of data %d\n", list_len(g_dict), list_len(g_training_data));
 }
 
 /**

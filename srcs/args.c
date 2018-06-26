@@ -10,7 +10,7 @@ Arguments arguments_get_args(int argc, char* const argv[]) {
   arguments.data_dir_path = 0;
   arguments.model_file_path = 0;
   char character;
-  while ((character = getopt (argc, argv, "d:m:rt")) != -1)
+  while ((character = getopt (argc, argv, "d:m:rte")) != -1)
     switch (character)
     {
       case 'd':
@@ -22,8 +22,12 @@ Arguments arguments_get_args(int argc, char* const argv[]) {
       case 'r':
         arguments.action = RUN;
         break;
+      case 'e':
+        arguments.action = TRAIN_EMBEDDED;
+        break;
       case 't':
         arguments.action = TRAIN;
+        break;
       case '?':
         if (optopt == 'd')
           arguments.data_dir_path = 0;
