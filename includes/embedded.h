@@ -4,10 +4,12 @@
 typedef struct Embedded_s {
   int nb_neighbour;
   int vector_size;
-  float* w2h;
-  float* w2o;
+  float* d_w2h;
+  float* d_w2o;
+  float* h_layer;
+  float* output;
 } Embedded;
 
-void embedded_process_batch(float* input, Embedded* nn);
+void embedded_process_batch(float* input, Embedded* em);
 
 #endif
