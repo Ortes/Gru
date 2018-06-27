@@ -1,11 +1,11 @@
-#ifndef DATA_H_
-#define DATA_H_
+#ifndef EMBEDDED_H_
+#define EMBEDDED_H_
 
 typedef struct Embedded_s {
-  int nb_words;
-  int nb_layers;
-  int* layers_size;
-  float** weigths;
+  int nb_neighbour;
+  int vector_size;
+  float* w2h;
+  float* w2o;
 } Embedded;
 
 void embedded_process_batch(float* input, Embedded* nn);
