@@ -2,7 +2,7 @@ CC	:= gcc
 
 RM	:= rm -rf
 
-CFLAGS	+= -Iincludes
+CFLAGS	+= -Iincludes -I/opt/cuda/include
 
 SRCS	:= $(shell find srcs -type f -name "*.c")
 
