@@ -1,6 +1,6 @@
 #ifndef KERNEL_UTILS_H_
 #define KERNEL_UTILS_H_
 
-void reduction(float* matrix, int height, int width, float* result);
+#define ALIGN32(N) (N & (32 / sizeof(float) - 1) + 1)
 
 #endif

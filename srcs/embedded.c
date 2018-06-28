@@ -2,6 +2,7 @@
 #include <cuda_runtime.h>
 #include <cublas_v2.h>
 #include "embedded.h"
+#include "kernel_embedded.h"
 #include "kernel_utils.h"
 
 static int init = 0;
@@ -37,6 +38,6 @@ void embedded_process_batch(int batch_size, float* d_input, float* d_expected, E
               em->dict_size, batch_size, em->vector_size, &alpha,
               em->d_w2o, em->dict_size, d_input, em->vector_size,
               &beta, d_o_layer, em->dict_size);
-  reduction(d_o_layer, em->dict_size, batch_size, d_reduction_vector);
+  m_exp_reduction(d_o_layer, em->dict_size, batch_size, d_reduction_vector);
   cublasDestroy(handle);
 }
