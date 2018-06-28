@@ -1,4 +1,4 @@
-__global__ reduction(float* matrix, int height, int width)
+__global__ void reduction(float* matrix, int height, int width)
 {
   __shared__ float thread_sums[];
   int offset = blockIdx.x * blockDim.x + threadIdx.x;
