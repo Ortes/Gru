@@ -1,6 +1,5 @@
 CUDAPATH=/opt/cuda
 
-
 CC	:= gcc
 
 RM	:= rm -rf
@@ -11,19 +10,19 @@ SRCS	:= $(shell find srcs -type f -name "*.c")
 
 KERSRCS	:= $(shell find srcs -type f -name "*.cu")
 
-LDFLAGS := -L$(CUDAPATH)/lib64 -lcublas -lcudart
+LDFLAGS := -L$(CUDAPATH)/lib64 -lcublas -lcudart -lstdc++
 
-OBJS	:= $(SRCS:.c=.o)
+OBJS	:= $(SRCS:.c=.o) $(KERSRCS:.cu=.o)
 
 NAME	:= Gru
 
 all: $(NAME)
 
-$(NAME): $(OBJS) kernels
+$(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-kernels:
-	$(CUDAPATH)/bin/nvcc -c $(CFLAGS) $(KERSRCS)
+%.o : %.cu
+	$(CUDAPATH)/bin/nvcc -c $(CFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(OBJS)

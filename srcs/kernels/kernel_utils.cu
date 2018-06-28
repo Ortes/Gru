@@ -1,4 +1,4 @@
-#include "kernel_utils.h"
+#include "constant.h"
 
 __global__ void d_reduction(float* matrix, int height, int width, float* result)
 {
